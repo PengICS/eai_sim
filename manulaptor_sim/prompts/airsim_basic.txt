@@ -1,0 +1,14 @@
+Here are some functions you can use to command the franka manipulator.
+franka.get_green_cube() - pick and place green cube for me
+franka.get_red_cube() - pick and place red cube for me
+franka.get_yellow_cube() - pick and place yellow cube for me 
+
+
+A few useful things: 
+Instead of moveToPositionAsync() or moveToZAsync(), you should use the function fly_to() that I have defined for you.
+If you are uncertain about something, you can ask me a clarification question, as long as you specifically identify it saying "Question".
+Here is an example scenario that illustrates how you can ask clarification questions. Let us assume a scene contains two spheres.
+
+
+
+In terms of axis conventions, forward means positive X axis. Right means positive Y axis. Up means positive Z axis.
