@@ -20,27 +20,6 @@ simulation_app = SimulationApp(config)
 # Locate Isaac Sim assets folder to load sample
 from omni.isaac.core.utils.nucleus import is_file
 
-usd_path = args_cli.usd_path
-try:
-    result = is_file(usd_path)
-except:
-    result = False
-
-if result:
-    omni.usd.get_context().open_stage(usd_path)
-
-simulation_app.update()
-
-print("Loading stage...")
-from omni.isaac.core.utils.stage import is_stage_loading
-
-while is_stage_loading():
-    simulation_app.update()
-print("Loading Complete")
-
-"""Rest everything follows."""
-
-
 from omni.isaac.core.world import World
 import omni.isaac.core.utils.prims as prim_utils
 from pegasus.simulator.params import ROBOTS
@@ -75,11 +54,26 @@ class PegasusApp:
 
         self.pg = PegasusInterface()
 
-        self.pg._world = World(**self.pg._world_settings, backend="torch")
+        self.pg._world = World(**self.pg._world_settings)
         self.world = self.pg.world
 
+        # Add a custom light with a high-definition HDR surround environment of an exhibition hall,
+        # instead of the typical ground plane
+        self.pg.load_environment(SIMULATION_ENVIRONMENTS["Simple Room"])
+
+        # prim_utils.create_prim(
+        #     "/World/Light/DomeLight",
+        #     "DomeLight",
+        #     attributes={
+        #         "texture:file": "omniverse://localhost/NVIDIA/Assets/Skies/Indoor/ZetoCGcom_ExhibitionHall_Interior1.hdr",
+        #         "intensity": 1000.0
+        # })
+
+        #self.pg.set_viewport_camera([1.0, 5.15, 1.65], [0.0, -1.65, 3.3])
+
+
         for i in range(2):
-            self.vehicle_factory(i, gap_x_axis=1.2)
+            self.vehicle_factory(i, gap_x_axis=4.5)
         self.pg._world.reset()
         self.world.reset()
         self.stop_sim = False
@@ -106,7 +100,7 @@ class PegasusApp:
             "/World/quadrotor",
             ROBOTS['Iris'],
             vehicle_id,
-            [-6 + gap_x_axis*vehicle_id, 2.5 , 0.3],
+            [-5.0, 0.00 + gap_x_axis*vehicle_id, 1],
             Rotation.from_euler("XYZ", [0.0, 0.0, 0.0], degrees=True).as_quat(),
             config=config_multirotor,
         )

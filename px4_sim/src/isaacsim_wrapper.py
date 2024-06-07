@@ -1,5 +1,6 @@
 import asyncio
 from mavsdk import System
+from mavsdk.action import OrbitYawBehavior
 
 
 class IsaacSimWrapper:
@@ -32,6 +33,7 @@ class IsaacSimWrapper:
         asyncio.get_event_loop().run_until_complete(self.drone.action.arm())
 
     def takeoff(self):
+        self.arm()
         asyncio.get_event_loop().run_until_complete(self.drone.action.takeoff())
     
     def land(self):
@@ -40,14 +42,16 @@ class IsaacSimWrapper:
     def back(self):
         asyncio.get_event_loop().run_until_complete(self.drone.action.return_to_launch())
 
-    def fly_to(self,position):
-        asyncio.get_event_loop().run_until_complete(self.drone.action.goto_location(position[0] , position[1] , position[2], 0))
+    def fly_to(self,x,y,z):
+        asyncio.get_event_loop().run_until_complete(self.drone.action.goto_location(x , y , z, 0))
+        
 
     def fly_path(self,points) :
         return
     
     def get_position(self):
         position = asyncio.get_event_loop().run_until_complete(self.drone.telemetry.position().__aiter__().__anext__())
+        print(position)
         return [position.latitude_deg, position.longitude_deg,position.absolute_altitude_m]
     
     def get_drone_position(self):
@@ -59,3 +63,20 @@ class IsaacSimWrapper:
 
     def get_yaw(self):
         self.drone.telemetry.actuator_output_status()
+    
+    def fly_cycle(self,radius = 3):
+        position = asyncio.get_event_loop().run_until_complete(self.drone.telemetry.position().__aiter__().__anext__())
+        orbit_height = position.absolute_altitude_m + 3
+        yaw_behavior = OrbitYawBehavior.HOLD_FRONT_TO_CIRCLE_CENTER
+        asyncio.get_event_loop().run_until_complete(self.drone.action.do_orbit(radius_m=radius,
+                                velocity_ms=4,
+                                yaw_behavior=yaw_behavior,
+                                latitude_deg=47.398036222362471,
+                                longitude_deg=8.5450146439425509,
+                                absolute_altitude_m=orbit_height))
+
+    def wait(self,second=5):
+        asyncio.get_event_loop().run_until_complete(asyncio.sleep(second))
+    
+    def hold(self):
+        asyncio.get_event_loop().run_until_complete(self.drone.action.hold())

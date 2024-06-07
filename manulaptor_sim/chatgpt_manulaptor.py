@@ -6,8 +6,8 @@ import os
 import json
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--prompt", type=str, default="manulaptor_sim/prompts/airsim_basic.txt")
-parser.add_argument("--sysprompt", type=str, default="manulaptor_sim/system_prompts/airsim_basic.txt")
+parser.add_argument("--prompt", type=str, default="manulaptor_sim/prompts/eaisim_basic.txt")
+parser.add_argument("--sysprompt", type=str, default="manulaptor_sim/system_prompts/eaisim_basic.txt")
 args = parser.parse_args()
 
 with open("manulaptor_sim/config/config.json", "r") as f:

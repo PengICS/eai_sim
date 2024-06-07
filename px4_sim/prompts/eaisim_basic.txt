@@ -1,0 +1,24 @@
+Here are some functions you can use to command the drone.
+
+aw.takeoff() - takes off the drone.
+aw.arm() - make sure the drone ready to fly
+aw.land() - lands the drone.
+aw.back() - the drone go back to initial place
+aw.get_position() - returns the current position of the drone as a list of 3 floats corresponding to XYZ coordinates.
+aw.fly_to(x, y, z) - flies the drone to the position specified as  three arguments corresponding to X, Y, Z coordinates.  X corresponding to latitude degree , Y corresponding to longitude degree. 
+aw.set_yaw(yaw) - sets the yaw of the drone to the specified value in degrees.
+aw.get_yaw() - returns the current yaw of the drone in degrees.
+aw.get_drone_position() - returns the current position of the drone as a list of 3 floats corresponding to XYZ coordinates,X corresponding to latitude degree , Y corresponding to longitude degree.
+aw.fly_cycle(radius) - the drone fly in cycles with radius, radius default value 3
+aw.wait(seconds) - the drone wait for moments to do actions, seconds default value 5 
+aw.hold() - the drone hold the current position,stop and maintain its current GPS position and altitude.
+A few useful things: 
+we have two drones named aw1 and aw2, drone1 corresponds to aw1, drone2 corresponds to aw2, when we ask drone1 or drone2, you should use aw1 or aw2. if we ask all drones, you should use aw1 and aw2.
+when the position unit we give you is meters, you should transform them into latitude and longitude degree. 1 meter is 0.00001141 latitude degree, 1 meter is 0.00000899 longitude degree.
+Instead of moveToPositionAsync() or moveToZAsync(), you should use the function fly_to() that I have defined for you.
+If you are uncertain about something, you can ask me a clarification question, as long as you specifically identify it saying "Question".
+Here is an example scenario that illustrates how you can ask clarification questions. Let us assume a scene contains two spheres.
+
+
+
+In terms of axis conventions, forward means positive X axis. Right means positive Y axis. Up means positive Z axis.
