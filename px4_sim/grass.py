@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser("Welcome to ISAAC SIM: Omniverse Robotics Envir
 parser.add_argument("--headless", action="store_true", default=False, help="Force display off at all times.")
 parser.add_argument("--robot", type=str, default="franka_panda", help="Name of the robot.")
 parser.add_argument(
-    "--usd_path", type=str, help="Path to usd file, should be relative to your default assets folder", default="/home/liugc/python_workspace/pcl_sim/px4_sim/env/house.usd",required=False
+    "--usd_path", type=str, help="Path to usd file, should be relative to your default assets folder", default="/home/liugc/python_workspace/pcl_sim/px4_sim/env/grass.usd",required=False
 )
 args_cli = parser.parse_args()
 
@@ -106,7 +106,7 @@ class PegasusApp:
             "/World/quadrotor",
             ROBOTS['Iris'],
             vehicle_id,
-            [-6 + gap_x_axis*vehicle_id, 2.5 , 0.3],
+            [0 , 0 + gap_x_axis*vehicle_id, 0.15],
             Rotation.from_euler("XYZ", [0.0, 0.0, 0.0], degrees=True).as_quat(),
             config=config_multirotor,
         )
