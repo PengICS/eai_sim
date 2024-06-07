@@ -10,8 +10,8 @@ import time
 import _thread
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--prompt", type=str, default="px4_sim/prompts/airsim_basic.txt")
-parser.add_argument("--sysprompt", type=str, default="px4_sim/system_prompts/airsim_basic.txt")
+parser.add_argument("--prompt", type=str, default="px4_sim/prompts/eaisim_basic.txt")
+parser.add_argument("--sysprompt", type=str, default="px4_sim/system_prompts/eaisim_basic.txt")
 args = parser.parse_args()
 
 with open("px4_sim/config/config.json", "r") as f:
@@ -36,10 +36,15 @@ chat_history = [
     {
         "role": "assistant",
         "content": """```python
-aw.fly_to([aw.get_drone_position()[0], aw.get_drone_position()[1], aw.get_drone_position()[2]+10])
+current_pos1 = aw1.get_drone_position()
+current_pos2 = aw2.get_drone_position()
+
+aw1.fly_to(current_pos1[0] + 2 * 0.00001141, current_pos1[1], current_pos1[2])
+aw2.fly_to(current_pos2[0], current_pos2[1] + 2 * 0.00000899, current_pos2[2])
+
 ```
 
-This code uses the `fly_to()` function to move the drone to a new position that is 10 units up from the current position. It does this by getting the current position of the drone using `get_drone_position()` and then creating a new list with the same X and Y coordinates, but with the Z coordinate increased by 10. The drone will then fly to this new position using `fly_to()`."""
+This code uses the `fly_to()` function to move the drone1 to a new position that 2 meter right from the current position,move the drone2 to a new position that 2 meter forward from the current position. It does this by transforming meter to latitude and longitude and getting the current position of the drone using `get_drone_position()` and then creating a new list with the same X increased by 2*0.00001141 and Y coordinates increased by 2*0.00000899 and Z coordinate. The drone will then fly to this new position using `fly_to()`."""
     }
 ]
 
@@ -96,10 +101,10 @@ print(f"Initializing isaac Sim...")
 # asyncio.get_event_loop().run_until_complete(aw.connect(14542))
 
 aw1 = IsaacSimWrapper(50041)
-asyncio.get_event_loop().run_until_complete(aw1.connect(14543))
+asyncio.get_event_loop().run_until_complete(aw1.connect(14540))
 
 aw2 = IsaacSimWrapper(50040)
-asyncio.get_event_loop().run_until_complete(aw2.connect(14542))
+asyncio.get_event_loop().run_until_complete(aw2.connect(14541))
 
 # aw.arm()
 # asyncio.get_event_loop().run_until_complete(asyncio.sleep(2))
